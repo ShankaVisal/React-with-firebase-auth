@@ -1,4 +1,4 @@
-import './App.css'
+import './App.css';
 import {
   BrowserRouter,
   Routes,
@@ -12,36 +12,29 @@ import { auth } from './firebase';
 import { ProtectedRoutes } from './Components/ProtectedRoutes';
 
 function App() {
-
-  const [user,setUser] = useState(null);
+  const [user, setUser] = useState(null);
   const [isFetching, setIsFetching] = useState(true);
-  useEffect(()=>{
-    const unsubcribe = onAuthStateChanged(auth, (user)=>{
-      if(user){
-        setUser(user);
-        setIsFetching(false);
-        return;
-      }
-      setUser(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
       setIsFetching(false);
-
     });
-    return ()=> unsubcribe();
-  },[]);
+    return () => unsubscribe();
+  }, []);
 
-  if(isFetching){
-    return <h2>Loading.....</h2>
+  if (isFetching) {
+    return <h2>Loading...</h2>;
   }
-
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route index path='/' element={<Home user={user}></Home>}></Route>
-        <Route index path='/private' element={<ProtectedRoutes user={user}><Private></Private></ProtectedRoutes>}></Route>
-      </Routes> 
+        <Route path='/' element={<Home user={user} />} />
+        <Route path='/private' element={<ProtectedRoutes user={user}><Private /></ProtectedRoutes>} />
+      </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
